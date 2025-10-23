@@ -34,7 +34,7 @@ jobs:
       run: docker build . --file Dockerfile --tag devops-demo_eni:$(date +%s)
 
     - name: connect to dockerhub
-      run: docker login ${{ secrets.MON_LOGIN}}
+      run: docker login ${{ secrets.DOCKERHUB_USERNAME}}
 
     - name: push image to dockerHub
       run: docker push Makusu22/devops-demo_eni:latest
