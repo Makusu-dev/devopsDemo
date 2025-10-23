@@ -2,8 +2,6 @@ name: Docker Image CI
 
 env:
   AZURE_WEBAPP_NAME: your-app-name    # set this to the name of your Azure Web App
-  JAVA_VERSION: '17'                  # set this to the Java version to use
-  DISTRIBUTION: OpenJDK                  # set this to the Java distribution
 
 on:
   push:
@@ -20,7 +18,7 @@ jobs:
     - uses: actions/setup-java@v4
       with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'OpenJDK'
           cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
@@ -34,7 +32,7 @@ jobs:
       run: docker build . --file Dockerfile --tag devops-demo_eni:$(date +%s)
 
     - name: connect to dockerhub
-      run: docker login ${{ secrets.DOCKERHUB_USERNAME}}
+      run: docker login ${{ secrets.DOCKERHUB_USERNAME}}:${{ secrets.DOCKERHUB_USERNAME}}
 
     - name: push image to dockerHub
       run: docker push Makusu22/devops-demo_eni:latest
@@ -43,9 +41,26 @@ jobs:
     permissions:
       contents: none
     needs: build
+    environment:
+      name: 'Development'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
     runs-on: ubuntu-latest
 
     steps:
       - uses: azure/webapps-deploy@v2
+  
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: '*.jar'
     
     
