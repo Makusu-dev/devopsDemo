@@ -31,7 +31,7 @@ jobs:
 
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag devops-demo_eni:$(date +%s)
+        run: docker build . --file Dockerfile --tag devops-demo_eni:1.0
 
       - name: connect to dockerhub
         uses: docker/login-action@v2
@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PWD}}
 
       - name: push image to dockerHub
-        run: docker push Makusu22/devops-demo_eni:latest
+        run: docker push devops-demo_eni:1.0 Makusu22/devops-demo_eni:1.0
 
   deploy:
     permissions:
