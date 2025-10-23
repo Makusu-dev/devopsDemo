@@ -1,7 +1,7 @@
 name: Docker Image CI
 
 env:
-  AZURE_WEBAPP_NAME: your-app-name    # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: devops-demo_eni    # set this to the name of your Azure Web App
 
 on:
   push:
