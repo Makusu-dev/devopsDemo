@@ -28,10 +28,18 @@ jobs:
       # Construire avec Maven
       - name: Build with Maven
         run: mvn package --file pom.xml
+        
+      - name: List target directory
+        run: ls -la target/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-jar
+          path: target/*.jar
+        
       - name: Install with Maven
         run: mvn install
-
-
 
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag devops-demo_eni:1.0
@@ -48,16 +56,23 @@ jobs:
         run: docker push makusu22/devops-demo_eni:1.0
 
   deploy:
-    
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: 'Deploy to Azure WebApp!'        
-        uses: azure/webapps-deploy@v2     
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app-jar
+
+      - name: List downloaded files
+        run: ls -la
+
+      - name: 'Deploy to Azure WebApp!'
+        uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ secrets.AZURE_MSDEPLOYSITE }}
           publish-profile: ${{ secrets.AZURE_PUBLISHPROFILE }}
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/target/*.jar'
-       
+          package: '*.jar'
           
           
     
