@@ -28,6 +28,8 @@ jobs:
       # Construire avec Maven
       - name: Build with Maven
         run: mvn package --file pom.xml
+      - name: Install with Maven
+        run: mvn install
 
 
 
