@@ -54,7 +54,7 @@ jobs:
         with:
           app-name: ${{ secrets.AZURE_MSDEPLOYSITE }}
           publish-profile: ${{ secrets.AZURE_PUBLISHPROFILE }}
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/target/*.jar' 
+          package: /target/*.jar
        
           
           
