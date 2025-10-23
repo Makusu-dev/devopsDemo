@@ -45,28 +45,16 @@ jobs:
         run: docker push makusu22/devops-demo_eni:1.0
 
   deploy:
-    permissions:
-      contents: none
-    needs: build
-    environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
     runs-on: ubuntu-latest
-
     steps:
-
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: java-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+      - name: 'Deploy to Azure WebApp!'        
+        uses: azure/webapps-deploy@v2     
         with:
           app-name: ${{ secrets.AZURE_MSDEPLOYSITE }}
           publish-profile: ${{ secrets.AZURE_PUBLISHPROFILE }}
-          package: '*.jar'
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/target/*.jar' 
+       
+          
+          
     
     
