@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PWD}}
 
       - name: tag image 
-        run: docker tag devops-demo_eni:1.0 Makusu22/devops-demo:1.0
+        run: docker tag devops-demo_eni:1.0 Makusu22/devops-demo_eni:1.0
       - name: push image to dockerHub
         run: docker push Makusu22/devops-demo_eni:1.0
 
