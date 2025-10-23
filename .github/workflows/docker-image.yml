@@ -1,7 +1,7 @@
 name: Docker Image CI
 
 env:
-  AZURE_WEBAPP_NAME: devops-demo_eni    # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: monAppDevopsEni    # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: ${{ github.workspace }}
 
 on:
@@ -49,7 +49,7 @@ jobs:
       - name: 'Deploy to Azure WebApp!'
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.AZURE_MSDEPLOYSITE }}
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_PUBLISHPROFILE }}
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/target/*.jar'
 
