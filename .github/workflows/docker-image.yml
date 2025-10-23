@@ -27,7 +27,7 @@ jobs:
 
       # Construire avec Maven
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: mvn package --file pom.xml
 
 
 
