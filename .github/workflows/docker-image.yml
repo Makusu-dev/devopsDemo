@@ -2,6 +2,7 @@ name: Docker Image CI
 
 env:
   AZURE_WEBAPP_NAME: devops-demo_eni    # set this to the name of your Azure Web App
+  AZURE_WEBAPP_PACKAGE_PATH: ${{ github.workspace }}
 
 on:
   push:
@@ -45,6 +46,7 @@ jobs:
         run: docker push makusu22/devops-demo_eni:1.0
 
   deploy:
+    
     runs-on: ubuntu-latest
     steps:
       - name: 'Deploy to Azure WebApp!'        
